@@ -1,0 +1,14 @@
+.bar {
+  padding-right: 2px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 5%;
+  height: 10%;
+  background: linear-gradient(
+    0deg,
+    rgba(22, 22, 22, 1) 5%,
+    rgba(210, 210, 210, 1) 100%
+  );
+}
+    
