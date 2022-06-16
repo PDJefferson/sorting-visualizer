@@ -1,42 +1,72 @@
 import styles from "./NavBar.module.css";
 import Slider from "./Slider";
+import React, { useState, useLayoutEffect } from "react";
 
 const NavBar = (props) => {
-	const sliderChangeEvent = (event) => {
+  const currentSort = "Sort";
+  const [selectedSort, setSelectedSort] = useState(currentSort);
+  const [randomClicked, setRandomClicked] = useState(true);
+
+  const sliderChangeEvent = (event) => {
     props.onSavedPopulatedArray(event);
-	}
+    setRandomClicked(true);
+  };
 
-  const performedQuickSort = (event) => {
-    console.log("Quick Sort");
-  }
+  const quickSortHandler = (event) => {
+    setSelectedSort("Quick Sort");
+  };
 
-  const performedSelectionSort = (event) => {
+  const SelectionSortHandler = (event) => {
+    setSelectedSort("Selection Sort");
+  };
 
-  }
+  const bubbleSortHandler = (event) => {
+    setSelectedSort("Bubble Sort");
+  };
 
   const randomizeArrayHandler = (event) => {
-    props.onClickedRandomizeArray(event);
-  }
+    if (randomClicked) {
+      props.onClickedRandomizeArray(event);
+      setRandomClicked(false);
+    } else {
+      console.log("Can only randomize once");
+    }
+  };
+
+  const startSortinghandler = (event) => {
+    
+      if (selectedSort === "Sort") {
+        console.log("Please select a sort");
+      } else if (selectedSort === "Quick Sort") {
+     
+      } else if (selectedSort === "Selection Sort") {
+        props.onPerformSectionSort(event);
+      
+      } else if (selectedSort === "Bubble Sort") {
+        props.onPerformBubbleSort(event);
+        
+      }
+  };
 
   return (
     <div className={styles.navbar}>
       <Slider onSliderChange={sliderChangeEvent} />
-      <button  onClick={randomizeArrayHandler} className={styles['button-set']}> Randomize </button>
-			<button className={styles['button-set']}> Start </button>
+      <button onClick={randomizeArrayHandler} className={styles["button-set"]}>
+        {" "}
+        Randomize{" "}
+      </button>
+      <button className={styles["button-set"]} onClick={startSortinghandler}>
+        {" "}
+        Start{" "}
+      </button>
       <div className={styles.dropdown}>
-        <button className={styles.dropbtn}>
-          Sort
-        </button>
-        <div className={styles['dropdown-content']}>
-          <a onClick={performedQuickSort}>QuickSort</a>
-          <a >Selection Sort</a>
-          <a >Bubble Sort</a>
-        </div>        
+        <button className={styles.dropbtn}>{selectedSort}</button>
+        <div className={styles["dropdown-content"]}>
+          <a onClick={quickSortHandler}>QuickSort</a>
+          <a onClick={SelectionSortHandler}>Selection Sort</a>
+          <a onClick={bubbleSortHandler}>Bubble Sort</a>
+        </div>
       </div>
-      
-        
-      
-      
     </div>
   );
 };

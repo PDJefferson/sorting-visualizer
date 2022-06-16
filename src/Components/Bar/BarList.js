@@ -5,7 +5,6 @@ const BarList = (props) => {
 
   return (
     props.items.map((item, index) => (
-   
       <Bar
         key={index}
         id={index}

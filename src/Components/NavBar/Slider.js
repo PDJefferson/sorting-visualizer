@@ -1,13 +1,13 @@
 import styles from "./Slider.module.css";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { getPopulatedArray } from "../../Algorithms/PopulateArray";
-import  {useEffect} from "react";
+
 
 const Slider = (props) => {
   const array = getPopulatedArray(10);
   const [currentArray, setCurrentArray] = useState(array);
+  
   useEffect(() => {
-    const mountArray = getPopulatedArray(currentArray.length);
     props.onSliderChange(currentArray);
   }, [currentArray]);
 
@@ -23,8 +23,9 @@ const Slider = (props) => {
       <input
         type="range"
         min="10"
-        max="500"
-        step ="10"
+        max="200"
+        step ="5"
+        disabled= {false}
         className={styles.slider}
         value={currentArray.length}
         onChange={handleSliderChange}

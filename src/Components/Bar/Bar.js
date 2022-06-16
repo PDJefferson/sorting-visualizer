@@ -10,7 +10,6 @@ const Bar = (props) => {
 
   return (
     <div
-      id={props.item}
       className={styles.bar}
       style={{left: currentLeft, height: currentHeight, width: currentWidth }}
     ></div>
