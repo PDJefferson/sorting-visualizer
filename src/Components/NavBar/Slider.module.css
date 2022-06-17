@@ -6,7 +6,7 @@
   border: none;
   outline: none;
   color: white;
-  padding: 20px 20px;
+  padding: 20px 50px;
   margin: 0;
   font-family: inherit; /* Important for vertical align on mobile phones */
   font-size: 16px;
@@ -26,9 +26,24 @@
 }
 
 .slider {
+  -webkit-appearance: none;
   background: #d3d3d3;
   outline: none;
   opacity: 0.7;
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
+ 
+
+}
+
+/* for chrome/safari */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 20px;
+  background: rgba(76, 134, 122, 0.76);
+  cursor: pointer;
+  border: 5px solid transparent;
+  border-radius: 4px;
 }

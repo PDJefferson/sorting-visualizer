@@ -36,6 +36,7 @@
 .button-set:hover {
   background-color: red;
   color: white;
+  cursor : pointer;
 }
 
 .button-set:active {
@@ -60,6 +61,7 @@
 .navbar a:hover,
 .dropdown:hover .dropbtn {
   background-color: red;
+  cursor: pointer;
 }
 
 a:active {

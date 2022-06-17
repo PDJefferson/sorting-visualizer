@@ -34,30 +34,25 @@ const NavBar = (props) => {
   };
 
   const startSortinghandler = (event) => {
-    
-      if (selectedSort === "Sort") {
-        console.log("Please select a sort");
-      } else if (selectedSort === "Quick Sort") {
-     
-      } else if (selectedSort === "Selection Sort") {
-        props.onPerformSectionSort(event);
-      
-      } else if (selectedSort === "Bubble Sort") {
-        props.onPerformBubbleSort(event);
-        
-      }
+    if (selectedSort === "Sort") {
+      console.log("Please select a sort");
+    } else if (selectedSort === "Quick Sort") {
+      props.onPerformQuickSort(event);
+    } else if (selectedSort === "Selection Sort") {
+      props.onPerformSectionSort(event);
+    } else if (selectedSort === "Bubble Sort") {
+      props.onPerformBubbleSort(event);
+    }
   };
 
   return (
     <div className={styles.navbar}>
       <Slider onSliderChange={sliderChangeEvent} />
       <button onClick={randomizeArrayHandler} className={styles["button-set"]}>
-        {" "}
-        Randomize{" "}
+        Randomize
       </button>
       <button className={styles["button-set"]} onClick={startSortinghandler}>
-        {" "}
-        Start{" "}
+        Start
       </button>
       <div className={styles.dropdown}>
         <button className={styles.dropbtn}>{selectedSort}</button>

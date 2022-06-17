@@ -23,7 +23,7 @@ const Slider = (props) => {
       <input
         type="range"
         min="10"
-        max="200"
+        max="500"
         step ="5"
         disabled= {false}
         className={styles.slider}
