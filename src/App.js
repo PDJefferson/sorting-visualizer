@@ -3,33 +3,22 @@ import Container from "./Components/Container/Container";
 import NavBar from "./Components/NavBar/NavBar";
 import React, { useState, useRef, useLayoutEffect } from "react";
 import { randomizeArray } from "./Algorithms/RandomizeArray";
-import { selectionSort, bubbleSort, quickSort } from "./Algorithms/Sorts";
-import { checkIfSorted } from "./Algorithms/CheckIfSorted";
-
-const POINTER_ONE_COLOR = "linear-gradient(315deg, #a40606 0%, #d98324 74%)";
-const POINTER_TWO_COLOR = "linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%)";
-const PIVOT_COLOR = "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)";
-const NORMAL_COLOR = "linear-gradient(-94deg, #d2ccc4 10%, #2f4353 90%)";
-const ANIMATION_DURATION = 1000;
-const BUTTONS = document.getElementsByClassName("NavBar_button-set__I5AlZ");
-const SLIDER = document.getElementsByClassName("Slider_slider__9p0k-");
+import Sorts from "./Algorithms/sorts";
+import Settings from "./Scripts/settings";
+import SortAnimations from "./Animations/sortAnimations";
 
 function App(props) {
+  
   //to store the bar divs
-  const ARRAY_BARS = useRef(document.getElementsByClassName("Bar_bar__lEqOG"));
-
+  const ARRAY_BARS = useRef(Settings.ARRAY_BARS);
   //to store the current array
   const [populatedArray, setPopulatedArray] = useState([]);
-
   //flag to show when shuffling is done
   const [isRandomizedArrayClicked, setIsRandomizedArrayClicked] =
     useState(false);
-  let comparisonCount = 0;
-  let swapCount = 0;
-
   //flag to show when sorting is done
   const [isSorted, setIsSorted] = useState(false);
-
+  
   useLayoutEffect(() => {
     if (isRandomizedArrayClicked) {
       const shuffleArray = randomizeArray(populatedArray, ARRAY_BARS);
@@ -37,18 +26,18 @@ function App(props) {
       setIsRandomizedArrayClicked(false);
     }
     if (isSorted) {
-      SLIDER[0].disabled = false;
-      BUTTONS[0].disabled = false;
-      BUTTONS[1].disabled = false;
+      Settings.SLIDER[0].disabled = false;
+      Settings.BUTTONS[0].disabled = false;
+      Settings.BUTTONS[1].disabled = false;
       setIsSorted(false);
     }
 
-  }, [isRandomizedArrayClicked, ARRAY_BARS, isSorted, populatedArray]);
+  }, [isRandomizedArrayClicked, isSorted, populatedArray]);
 
   const savePopulatedArrayHandler = (array) => {
     setPopulatedArray(array);
   };
-  
+
   const randomizeArrayHandler = (event) => {
     if (!isRandomizedArrayClicked) {
       setIsRandomizedArrayClicked(true);
@@ -56,143 +45,25 @@ function App(props) {
   };
 
   const performSelectionSortHandler = (event) => {
-    SLIDER[0].disabled = true;
-    BUTTONS[0].disabled = true;
-    BUTTONS[1].disabled = true;
-    
-   
-    const animations = selectionSort(populatedArray);
-    for (let i = 0; i < animations.length; i++) {
-      const [ithBar, jthBar, swap] = animations[i];
-      const ithBarStyle = ARRAY_BARS.current[ithBar].style;
-      const jthBarStyle = ARRAY_BARS.current[jthBar].style;
-      
-      if (!swap) {
-        setTimeout(() => {
-          swapCount = 0;
-          if (comparisonCount % 2 === 0) {
-            ithBarStyle.background = POINTER_ONE_COLOR;
-            jthBarStyle.background = POINTER_TWO_COLOR;
-            comparisonCount++;
-          } else {
-            ithBarStyle.background = NORMAL_COLOR;
-            jthBarStyle.background = NORMAL_COLOR;
-            comparisonCount++;
-          }
-          setIsSorted(checkIfSorted(ARRAY_BARS.current));
-        }, (ANIMATION_DURATION / populatedArray.length) * i);
-      } else {
-        setTimeout(() => {
-          comparisonCount = 0;
-          if (swapCount % 2 === 0) {
-            ithBarStyle.background = POINTER_ONE_COLOR;
-            jthBarStyle.background = POINTER_TWO_COLOR;
-            const ithBarTemp = ithBarStyle.height;
-            ithBarStyle.height = jthBarStyle.height;
-            jthBarStyle.height = ithBarTemp;
-
-            swapCount++;
-          } else {
-            ithBarStyle.background = NORMAL_COLOR;
-            jthBarStyle.background = NORMAL_COLOR;
-            swapCount++;
-          }
-          setIsSorted(checkIfSorted(ARRAY_BARS.current));
-        }, (ANIMATION_DURATION / populatedArray.length) * i);
-      }
-    }
+    const animations = Sorts.selectionSort(populatedArray);
+    SortAnimations.animateSelectionSort(animations, setIsSorted, ARRAY_BARS, populatedArray);
   };
 
   const performBubbleSortHandler = (event) => {
-    const animations = bubbleSort(populatedArray);
-    SLIDER[0].disabled = true;
-    BUTTONS[0].disabled = true;
-    BUTTONS[1].disabled = true;
-    for (let i = 0; i < animations.length; i++) {
-      const [ithBar, jthBar, swap] = animations[i];
-      const ithBarStyle = ARRAY_BARS.current[ithBar].style;
-      const jthBarStyle = ARRAY_BARS.current[jthBar].style;
-      if (!swap) {
-        setTimeout(() => {
-          swapCount = 0;
-          if (comparisonCount % 2 === 0) {
-            ithBarStyle.background = POINTER_ONE_COLOR;
-            jthBarStyle.background = POINTER_TWO_COLOR;
-            comparisonCount++;
-          } else {
-            ithBarStyle.background = NORMAL_COLOR;
-            jthBarStyle.background = NORMAL_COLOR;
-            comparisonCount++;
-          }
-          setIsSorted(checkIfSorted(ARRAY_BARS.current));
-        }, (ANIMATION_DURATION / populatedArray.length) * i);
-      } else {
-        setTimeout(() => {
-          comparisonCount = 0;
-          if (swapCount % 2 === 0) {
-            ithBarStyle.background = POINTER_ONE_COLOR;
-            jthBarStyle.background = POINTER_TWO_COLOR;
-            const ithBarTempStyle = ithBarStyle.height;
-            ithBarStyle.height = jthBarStyle.height;
-            jthBarStyle.height = ithBarTempStyle;
-            swapCount++;
-          } else {
-            ithBarStyle.background = NORMAL_COLOR;
-            jthBarStyle.background = NORMAL_COLOR;
-            swapCount++;
-          }
-          setIsSorted(checkIfSorted(ARRAY_BARS.current));
-        }, (ANIMATION_DURATION / populatedArray.length) * i);
-      }
-    }
+    const animations = Sorts.bubbleSort(populatedArray);
+    SortAnimations.animateBubbleSort(animations, setIsSorted, ARRAY_BARS, populatedArray);
   };
 
   const performQuickSortHandler = (event) => {
-    const animations = quickSort(populatedArray);
-    SLIDER[0].disabled = true;
-    BUTTONS[0].disabled = true;
-    BUTTONS[1].disabled = true;
-  
-    for (let i = 0; i < animations.length; i++) {
-      const [ithBar, jthBar, swap] = animations[i];
-      const ithBarStyle = ARRAY_BARS.current[ithBar].style;
-      const jthBarStyle = ARRAY_BARS.current[jthBar].style;
-      if (!swap) {
-        setTimeout(() => {
-          swapCount = 0;
-          if (comparisonCount % 2 === 0) {
-            ithBarStyle.background = POINTER_ONE_COLOR;
-            jthBarStyle.background = PIVOT_COLOR;
-            comparisonCount++;
-          } else {
-            ithBarStyle.background = NORMAL_COLOR;
-
-            comparisonCount++;
-          }
-          setIsSorted(checkIfSorted(ARRAY_BARS.current));
-        }, (ANIMATION_DURATION / populatedArray.length) * i);
-      } else {
-        setTimeout(() => {
-          comparisonCount = 0;
-          if (swapCount % 2 === 0) {
-            ithBarStyle.background = POINTER_ONE_COLOR;
-            jthBarStyle.background = POINTER_TWO_COLOR;
-            const ithBarTempStyle = ithBarStyle.height;
-            ithBarStyle.height = jthBarStyle.height;
-            jthBarStyle.height = ithBarTempStyle;
-            swapCount++;
-          } else {
-            ithBarStyle.background = NORMAL_COLOR;
-            jthBarStyle.background = NORMAL_COLOR;
-            swapCount++;
-          }
-          setIsSorted(checkIfSorted(ARRAY_BARS.current));
-        }, (ANIMATION_DURATION / populatedArray.length) * i);
-      }
-    }
+    const animations = Sorts.quickSort(populatedArray);
+    SortAnimations.animateQuickSort(animations,setIsSorted, ARRAY_BARS, populatedArray);
   };
 
- 
+  const performInsertionSortHandler = (event) => {
+    const animations = Sorts.insertionSort(populatedArray);
+    SortAnimations.animateInsertionSort(animations, setIsSorted, ARRAY_BARS, populatedArray);
+  }
+
   return (
     <div>
       <NavBar
@@ -201,6 +72,7 @@ function App(props) {
         onPerformSectionSort={performSelectionSortHandler}
         onPerformBubbleSort={performBubbleSortHandler}
         onPerformQuickSort={performQuickSortHandler}
+        onPerformInsertionSort={performInsertionSortHandler}
       />
       <Container items={populatedArray} />
     </div>

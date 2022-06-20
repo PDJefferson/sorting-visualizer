@@ -1,5 +1,7 @@
-export  function randomizeArray(array, bars)  {
-    const ANIMATION_DURATION = 1000;
+import Settings from '../Scripts/settings';
+
+export function randomizeArray(array, bars)  {
+    
     for (let i = array.length-1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i+1));
         let temp1 = array[i];
@@ -11,7 +13,7 @@ export  function randomizeArray(array, bars)  {
             let temp =  currentDiv.style.left;
             currentDiv.style.left = randomDiv.style.left;
             randomDiv.style.left = temp;
-        }, (ANIMATION_DURATION/array.length) * i);  
+        }, (Settings.ANIMATION_DURATION/array.length) * i);  
     }
     return array;
 }
